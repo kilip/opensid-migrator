@@ -1,0 +1,29 @@
+version: '3.4'
+services:
+  mysql:
+    container_name: migrator.mysql
+    image: mariadb
+    ports:
+      - '${FORWARD_DB_PORT:-6306}:3306'
+    environment:
+      MARIADB_ROOT_PASSWORD: 'root'
+      MARIADB_DATABASE: 'opensid'
+      MARIADB_USER: 'opensid'
+      MARIADB_PASSWORD: 'opensid'
+      MARIADB_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - './var/mysql:/var/lib/database'
+      - './etc/mysql/init:/docker-entrypoint-initdb.d'
+  postgres:
+    container_name: migrator.postgres
+    build:
+      context: ./etc/postgres
+    environment:
+      - POSTGRES_DB=opensid
+      - POSTGRES_PASSWORD=opensid
+      - POSTGRES_USER=opensid
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./etc/postgres/dump:/dump:rw
+      - ./var/postgres:/var/lib/postgresql/data:rw

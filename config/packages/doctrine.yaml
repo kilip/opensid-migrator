@@ -1,0 +1,26 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+        mapping_types:
+            enum: string
+            inbox_coding: string
+            inbox_processed: string
+            outbox_coding: string
+            outbox_multipart: string
+            outbox_deliveryreport: string
+            sentitems_coding: string
+            sentitems_status: string
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        server_version: '13'
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            prototype:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/prototype/mapping'
+                prefix: 'OpenSID\Prototype\Model'
+                alias: prototype
